@@ -355,6 +355,7 @@ int NvCodecRender::Draw(unsigned char *rgba_frame, int w, int h)
 }
 int NvCodecRender::Render()
 {
+    cudaSetDevice(gpu_idx_);
     CUdeviceptr dp_rgba_frame = 0;
     std::unique_ptr<uint8_t[]> p_rgba_frame;
 
@@ -366,7 +367,7 @@ int NvCodecRender::Render()
 
     uint8_t *p_video = NULL;
     int n_video_bytes = 0;
-    cudaSetDevice(gpu_idx_);
+    
     do {
         int64_t pts;
         demuxer_->Demux(&p_video, &n_video_bytes, &pts);

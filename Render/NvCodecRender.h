@@ -31,7 +31,7 @@ extern "C" {
 class NvCodecRender
 {
 public:
-    NvCodecRender(const char *input, const char *output, int gpu_idx, bool us_nv_enc = false);
+    NvCodecRender(const char *input, const char *output, int gpu_idx, bool use_nvenc = false);
     ~NvCodecRender();
     int Render();
 
