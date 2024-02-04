@@ -1,6 +1,6 @@
 # Nvidia-Video-Codec-Demo
-NVIDIA video decoding, rendering, encoding and writing to MP4 file
-Nvidia视频硬解码、渲染、软/硬编码并写入MP4文件。
+* NVIDIA video decoding, rendering, encoding and writing to MP4 file
+* Nvidia视频硬解码、渲染、软/硬编码并写入MP4文件。
 
 
 # 本项目基于英伟达 Video_Codec_SDK_11.0.10 API实现。
