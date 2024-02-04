@@ -2,7 +2,7 @@
 NVIDIA video decoding, rendering, encoding and writing to MP4 file，Nvidia视频解码、渲染、编码并写入MP4文件。
 
 
-# 本项目基于英伟达 Video_Codec_SDK_11.0.10实现视频硬解码、opencv渲染、软/硬编码并把编码之后的视频写入MP4文件，这也是一种常见的流媒体开发流程，。
+# 本项目基于英伟达 Video_Codec_SDK_11.0.10实现视频硬解码、opencv渲染、软/硬编码并把编码之后的视频写入MP4文件。
 * 解码：使用Video_Codec_SDK_11.0.10解码API对视频进行解码，支持H264、H265。
 * 渲染：使用opencv对图像进行渲染，涉及到了基础的cuda开发(不过都是比较简单的，没有什么难度)。
 * 编码：支持软硬编码切换，硬编码使用Video_Codec_SDK_11.0.10 API,软编码使用ffmpeg API，视频编码格式为H264，如需H265可自行修改(NvCodecRender::EncInit()/NvCodecRender.cpp)。基本nvidia的所有显卡都支持视频解码、但不是所有显卡都支持编码、所以这里实现了软硬编码切换功能。
