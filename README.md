@@ -1,5 +1,5 @@
 # Nvidia-Video-Codec-Demo
-* NVIDIA video decoding, rendering, encoding and writing to MP4 file
+* Nvidia video hard decoding, rendering, soft/hard encoding, and writing to MP4 file
 * Nvidia视频硬解码、渲染、软/硬编码并写入MP4文件。
 
 
