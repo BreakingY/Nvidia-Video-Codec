@@ -68,11 +68,11 @@ private:
     unsigned char pps_buffer_[1024];
     int pps_len_ = 0;
     int video_track_ = -1;
-    int v_fps = 25;
-    int v_bitrate = 0;
-    int v_pts = 0;
-    int out_fps = 25; // 输出帧率
+    int v_fps_ = 25;
+    int v_bitrate_ = 0;
+    int v_pts_ = 0;
+    int out_fps_ = 25; // 输出帧率
     int64_t total_frames_ = 0;
-    unsigned char *v_packet = NULL;
+    unsigned char *v_packet_ = NULL;
     int64_t packet_len_ = 4 * 1024 * 1024;
 };

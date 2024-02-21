@@ -138,25 +138,25 @@ NvCodecRender::~NvCodecRender()
         delete mp4_;
         mp4_ = NULL;
     }
-    if (v_packet) {
-        free(v_packet);
-        v_packet = NULL;
+    if (v_packet_) {
+        free(v_packet_);
+        v_packet_ = NULL;
     }
     printf("~ReidRender\n");
 }
 int NvCodecRender::EncInit()
 {
-    demuxer_->GetParam(v_fps, v_bitrate); // 编码的时候使用原始视频的帧率和码流，尽可能的保留原始画质
-    if (v_fps <= 0) {
-        v_fps = 25;
+    demuxer_->GetParam(v_fps_, v_bitrate_); // 编码的时候使用原始视频的帧率和码流，尽可能的保留原始画质
+    if (v_fps_ <= 0) {
+        v_fps_ = 25;
     }
-    if (v_bitrate <= 0) {
-        v_bitrate = 4000000;
+    if (v_bitrate_ <= 0) {
+        v_bitrate_ = 4000000;
     }
-    out_fps = v_fps; // 输出帧率
+    out_fps_ = v_fps_; // 输出帧率
     if (use_nvenc_) {
         std::string param1 = "-codec h264 -preset p4 -profile baseline -tuninginfo ultralowlatency -bf 0 "; // 编码参数，根据需求自行修改
-        std::string param2 = "-fps " + std::to_string(v_fps) + " -gop " + std::to_string(2 * v_fps) + " -bitrate " + std::to_string(v_bitrate);
+        std::string param2 = "-fps " + std::to_string(v_fps_) + " -gop " + std::to_string(2 * v_fps_) + " -bitrate " + std::to_string(v_bitrate_);
         std::string sz_param = param1 + param2;
         printf("sz_param:%s\n", sz_param.c_str());
         int rgba_frame_pitch = width_ * 4;
@@ -179,9 +179,9 @@ int NvCodecRender::EncInit()
         h264_codec_ctx_->width = width_;
         h264_codec_ctx_->height = height_;
         h264_codec_ctx_->time_base.num = 1;
-        h264_codec_ctx_->time_base.den = v_fps;
-        h264_codec_ctx_->bit_rate = v_bitrate;
-        h264_codec_ctx_->gop_size = v_fps * 2;
+        h264_codec_ctx_->time_base.den = v_fps_;
+        h264_codec_ctx_->bit_rate = v_bitrate_;
+        h264_codec_ctx_->gop_size = v_fps_ * 2;
         h264_codec_ctx_->thread_count = 1;
         h264_codec_ctx_->slices = 1; // 切片数量。 表示图片细分的数量。 用于并行解码。
         /*
@@ -273,18 +273,18 @@ int NvCodecRender::Write2File(uint8_t *data, int len)
             }
         } else if (nal_type == 5 || nal_type == 1) {
             bool is_key = nal_type == 5 ? true : false;
-            v_pts += 1000 / out_fps;
+            v_pts_ += 1000 / out_fps_;
             uint32_t packet_len = nal_len - prefix_len + 4;
-            if (v_packet == NULL || packet_len > packet_len_) {
+            if (v_packet_ == NULL || packet_len > packet_len_) {
                 packet_len_ = packet_len > packet_len_ ? packet_len : packet_len_;
-                v_packet = (unsigned char *)realloc(v_packet, packet_len_);
+                v_packet_ = (unsigned char *)realloc(v_packet_, packet_len_);
             }
-            v_packet[0] = (nal_len - prefix_len) >> 24;
-            v_packet[1] = (nal_len - prefix_len) >> 16;
-            v_packet[2] = (nal_len - prefix_len) >> 8;
-            v_packet[3] = (nal_len - prefix_len) & 0xff;
-            memcpy(v_packet + 4, p_video + prefix_len, nal_len - prefix_len);
-            mp4_->WriteMedia(v_packet, packet_len, video_track_, v_pts, v_pts, is_key);
+            v_packet_[0] = (nal_len - prefix_len) >> 24;
+            v_packet_[1] = (nal_len - prefix_len) >> 16;
+            v_packet_[2] = (nal_len - prefix_len) >> 8;
+            v_packet_[3] = (nal_len - prefix_len) & 0xff;
+            memcpy(v_packet_ + 4, p_video + prefix_len, nal_len - prefix_len);
+            mp4_->WriteMedia(v_packet_, packet_len, video_track_, v_pts_, v_pts_, is_key);
         }
         p_video = get_nal(&nal_len, &buf_sffset, video_data, video_len, &prefix_len);
     }
@@ -355,7 +355,6 @@ int NvCodecRender::Draw(unsigned char *rgba_frame, int w, int h)
 }
 int NvCodecRender::Render()
 {
-    cudaSetDevice(gpu_idx_);
     CUdeviceptr dp_rgba_frame = 0;
     std::unique_ptr<uint8_t[]> p_rgba_frame;
 
