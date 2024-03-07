@@ -84,7 +84,7 @@ static uint8_t *get_nal(uint32_t *len, uint8_t **offset, uint8_t *start, uint32_
     *offset = p;
     return q;
 }
-static void createCudaContext(CUcontext *cuContext, int iGpu, unsigned int flags)
+static void CreateCudaContext(CUcontext *cuContext, int iGpu, unsigned int flags)
 {
     CUdevice cuDevice = 0;
     ck(cuDeviceGet(&cuDevice, iGpu));
@@ -110,7 +110,7 @@ NvCodecRender::NvCodecRender(const char *input, const char *output, int gpu_idx,
     gpu_idx_ = gpu_idx;
 
     std::call_once(flag, [this] {
-        createCudaContext(&cuContext, this->gpu_idx_, 0);
+        CreateCudaContext(&cuContext, this->gpu_idx_, 0);
     });
     dec_ = new NvDecoder(cuContext, true, FFmpeg2NvCodecId(demuxer_->GetVideoCodec()), true);
     //use_nvenc_ = SupportHardEnc(gpu_idx);
@@ -184,7 +184,7 @@ int NvCodecRender::EncInit()
         h264_codec_ctx_->gop_size = v_fps_ * 2;
         h264_codec_ctx_->thread_count = 1;
         h264_codec_ctx_->slices = 1; // 切片数量。 表示图片细分的数量。 用于并行解码。
-        /*
+        /**
          * 遇到问题：编码得到的h264文件播放时提示"non-existing PPS 0 referenced"
          *  分析原因：未将pps sps 等信息写入
          *  解决方案：加入标记AV_CODEC_FLAG2_LOCAL_HEADER
