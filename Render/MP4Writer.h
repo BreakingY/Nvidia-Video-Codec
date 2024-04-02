@@ -18,7 +18,8 @@ enum MEDIATYP {
 int h264_video_record_config(unsigned char *buffer, unsigned char *sps, int sps_len, unsigned char *pps, int pps_len);
 int hevc_video_record_config(unsigned char *buffer, unsigned char *sps, int sps_len, unsigned char *pps, int pps_len, unsigned char *vps, int vps_len);
 int aac_audio_record_config(); // TODO
-// 如果媒体包含多个sps pps，等待编码器全部编码完再把所有的sps pps写入extra_data，此时编码过程中先缓存音视频数据，最后写入文件
+// 如果媒体包含多个sps pps，需要从编码器中获取所有的sps pps，然后写入到extra_data中(eg:x264调用x264_encoder_headers函数可以获取编码参数sps pps)
+// 关于extra_data定义参考：https://blog.csdn.net/weixin_43147845/article/details/137011573?spm=1001.2014.3001.5502
 class MP4Writer
 {
 public:
