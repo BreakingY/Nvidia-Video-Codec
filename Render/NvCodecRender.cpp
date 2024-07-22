@@ -92,11 +92,12 @@ static void CreateCudaContext(CUcontext *cuContext, int iGpu, unsigned int flags
     ck(cuDeviceGetName(szDeviceName, sizeof(szDeviceName), cuDevice));
     std::cout << "GPU in use: " << szDeviceName << std::endl;
     ck(cuCtxCreate(cuContext, flags, cuDevice));
+    return;
 }
 // 查询显卡是否支持H264编码
 static bool SupportHardEnc(int iGpu)
 {
-    
+    return false;
 }
 NvCodecRender::NvCodecRender(const char *input, const char *output, int gpu_idx, bool use_nvenc)
 {
@@ -288,6 +289,7 @@ int NvCodecRender::Write2File(uint8_t *data, int len)
         }
         p_video = get_nal(&nal_len, &buf_sffset, video_data, video_len, &prefix_len);
     }
+    return 0;
 }
 int NvCodecRender::EncFrame(void *ptr, int size)
 {

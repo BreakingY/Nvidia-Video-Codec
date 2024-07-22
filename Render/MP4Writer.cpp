@@ -165,4 +165,5 @@ int hevc_video_record_config(unsigned char *buffer, unsigned char *sps, int sps_
 }
 int aac_audio_record_config()
 {
+    return 0; 
 }
