@@ -1,3 +1,4 @@
+<a href="https://996.icu"><img src="https://img.shields.io/badge/link-996.icu-red.svg" alt="996.icu" /></a>            [![LICENSE](https://img.shields.io/badge/license-Anti%20996-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE)
 # Nvidia-Video-Codec
 * Nvidia video hard decoding, rendering, soft/hard encoding, and writing to MP4 file
 * Nvidia视频硬解码、渲染、软/硬编码并写入MP4文件。
